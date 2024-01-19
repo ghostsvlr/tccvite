@@ -1,27 +1,33 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PostPage from './components/PostPage.tsx';
-import PostList from './components/PostList.tsx';
-import AuthLogin from './components/Auth/Login.tsx';
-import AuthRegister from './components/Auth/Register.tsx';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import PostPage from "./components/PostPage";
+import PostList from "./components/PostList";
+import AuthLogin from "./components/Auth/Login";
+import AuthRegister from "./components/Auth/Register";
 
-const App: React.FC = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route
-            path="/login"
-            element={<AuthLogin onSwitchToRegister={() => {}} />}
-          />
-          <Route
-            path="/register"
-            element={<AuthRegister onSwitchToLogin={() => {}} />}
-          />
-        <Route path="/" element={<PostPage />} />
-        <Route path="/posts" element={<PostList posts={[]} />} />
-      </Routes>
-    </Router>
-  );
-};
+const router = createBrowserRouter([
+  {
+    path: "/",
+    children: [
+      {
+        path: "/login",
+        element: <AuthLogin onSwitchToRegister={() => {}} />,
+      },
+      {
+        path: "/register",
+        element: <AuthRegister onSwitchToLogin={() => {}} />,
+      },
+      {
+        path: "/",
+        element: <PostPage />,
+      },
+      {
+        path: "/posts",
+        element: <PostList posts={[]} />,
+      },
+    ],
+  },
+]);
 
-export default App;
+export function App() {
+  return <RouterProvider router={router} />;
+}
